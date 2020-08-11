@@ -5,7 +5,7 @@ loadScript("https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js");
 loadScript("https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js");
 module.exports = {
 	colorPicker : (el, options) => {
-		Pickr.create({
+		window.Pickr.create({
 			el,
 			theme: 'nano',
 			// container: element.parent(),
@@ -29,4 +29,4 @@ module.exports = {
 			if(options.onChange) options.onChange(color, instance);
 		});
 	}
-}
+};

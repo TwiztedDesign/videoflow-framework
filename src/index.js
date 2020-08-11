@@ -59,7 +59,7 @@ vff._playerStatus = {};
 
 vff.onModeChange = (cb) => {
     on(MODE_CHANGE, cb);
-}
+};
 vff.colorpicker = (el,options) => {colorPicker(el,options);};
 
 /********* State *********/
