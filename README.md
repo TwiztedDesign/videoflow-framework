@@ -3,7 +3,7 @@
 VFF is lightweight JavaScript library built to create graphic overlays for Videoflow. VFF exposes a state object that comunicates with Videoflow and is distributed acroess all videoflow players
 
 # CDN
-https://cdn.jsdelivr.net/npm/videoflow-framework
+https://cdn.jsdelivr.net/npm/videoflow-framework@0
 
 # Properties
 * vff.state
