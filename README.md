@@ -7,7 +7,7 @@ https://cdn.jsdelivr.net/npm/videoflow-framework
 
 # Properties
 * vff.state
-* vff.style 
+* vff.style - automatically converts properties to css variables (camel case to dash)
 
 # Methods
 * vff.send()
