@@ -15,7 +15,7 @@ describe("Events Api", () =>{
 
             //Assert
             expect(send).toHaveBeenCalledTimes(1);
-            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventPrimitiveData, query: undefined});
+            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventPrimitiveData, query: {}});
         });
 
         it("Should send track event with object data", () => {
@@ -29,7 +29,7 @@ describe("Events Api", () =>{
 
             //Assert
             expect(send).toHaveBeenCalledTimes(1);
-            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventObjectData, query: undefined});
+            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventObjectData, query: {}});
         });
 
         it("Should send track event with undefined data", () => {
@@ -43,7 +43,7 @@ describe("Events Api", () =>{
 
             //Assert
             expect(send).toHaveBeenCalledTimes(1);
-            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventUndefinedData, query: undefined});
+            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventUndefinedData, query: {}});
         });
 
         it("Should send track event with undefined data and undefined name", () => {
@@ -57,7 +57,7 @@ describe("Events Api", () =>{
 
             //Assert
             expect(send).toHaveBeenCalledTimes(1);
-            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventUndefinedData, query: undefined});
+            expect(send).toHaveBeenCalledWith(TRACK_EVENT, {name: eventName, data: eventUndefinedData, query: {}});
         });
 
     });

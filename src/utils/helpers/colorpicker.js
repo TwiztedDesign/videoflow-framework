@@ -1,4 +1,4 @@
-import {loadScript, loadStyle} from './helpers.js';
+import {loadScript, loadStyle} from '../helpers.js';
 
 loadStyle("https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css");
 loadScript("https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js");

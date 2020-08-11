@@ -15,7 +15,8 @@ import {api as videoApi} from './core/api/video';
 import * as httpApi from './core/api/http';
 import {MODE} from './core/consts';
 import * as noOverScroll from './utils/noOverscroll';
-import {colorPicker} from './utils/colorpicker.js';
+import {colorPicker} from './utils/helpers/colorpicker.js';
+// import Sortable from './utils/helpers/sortable';
 
 startListener();
 
@@ -61,6 +62,7 @@ vff.onModeChange = (cb) => {
     on(MODE_CHANGE, cb);
 };
 vff.colorpicker = (el,options) => {colorPicker(el,options);};
+// vff.sortable = (el, items, options) => {return new Sortable(el, items, options);};
 
 /********* State *********/
 vff.state = vffState.data;
