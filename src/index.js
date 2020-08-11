@@ -30,7 +30,7 @@ const _readyCallbacks = [];
 const vff = {};
 
 vff.ready               = (cb) => {_readyCallbacks.push(cb);};
-vff.onReady             = () => {_readyCallbacks.forEach(cb => {cb();});};
+vff.onReady             = () => {_readyCallbacks.forEach(cb => {cb();});}; //todo shouldn't be public
 vff.customReady         = () => {send(CUSTOM_READY);};
 
 vff.getQueryParams      = () => {return queryParams.get();};
