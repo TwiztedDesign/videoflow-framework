@@ -2,8 +2,6 @@ import {broadcast, flatten, deepCompare, getByPath} from '../../utils/helpers.js
 import {vffState} from '../vffState.js';
 import {VFF_EVENT} from '../../utils/events';
 
-
-
 async function update(data){
     let oldVal = JSON.parse(JSON.stringify(vffState.data || {}));
 
@@ -17,6 +15,7 @@ async function update(data){
     broadcast(VFF_EVENT, { dataChanged: true, data : vffState.data, oldVal});
 }
 
+
 module.exports = {
-    update : update,
+    update
 };

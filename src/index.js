@@ -6,6 +6,7 @@ import {queryParams} from "./core/queryParams.js";
 import {start as startListener} from './utils/listener';
 
 import {init as initResizeHandler} from './utils/resizeHandler';
+import {bindSyncEvents} from './core/interactionEvents.js';
 
 
 import {isMobile, extend, defer, uuid, on} from './utils/helpers';
@@ -22,6 +23,7 @@ startListener();
 
 window.addEventListener('load', () => {
     initResizeHandler();
+    bindSyncEvents(window);
     isMobile ? window.document.body.classList.add('vff-mobile') : window.document.body.classList.remove('vff-mobile');
     send(READY);
 });
