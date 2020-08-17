@@ -30,7 +30,7 @@ module.exports = {
     "VIDEO_PAUSED"  : "vff-video-paused",
     "VIDEO_TIME_UPDATE" : "vff-time-update",
 
-    "DEVICE_CHANGE" : " ",
+    "DEVICE_CHANGE" : "vff-device-change",
     "MODE_CHANGE"   : "vff-mode-change",
 
     "INTERACTION"   : "vff-interaction",

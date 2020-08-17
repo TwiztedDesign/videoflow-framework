@@ -149,7 +149,7 @@ module.exports = {
     "VIDEO_PAUSED": "vff-video-paused",
     "VIDEO_TIME_UPDATE": "vff-time-update",
 
-    "DEVICE_CHANGE": " ",
+    "DEVICE_CHANGE": "vff-device-change",
     "MODE_CHANGE": "vff-mode-change",
 
     "INTERACTION": "vff-interaction",
@@ -1994,9 +1994,9 @@ var _queryParams = __webpack_require__(39);
 
 var _listener = __webpack_require__(97);
 
-var _resizeHandler = __webpack_require__(124);
+var _resizeHandler = __webpack_require__(122);
 
-var _interactionEvents = __webpack_require__(116);
+var _interactionEvents = __webpack_require__(123);
 
 var _helpers = __webpack_require__(4);
 
@@ -3045,15 +3045,15 @@ module.exports = {
 
 var _updateHandler = __webpack_require__(99);
 
-var _pagesHandler = __webpack_require__(118);
+var _pagesHandler = __webpack_require__(116);
 
-var _queryParamsHandler = __webpack_require__(120);
+var _queryParamsHandler = __webpack_require__(118);
 
-var _reloadHandler = __webpack_require__(121);
+var _reloadHandler = __webpack_require__(119);
 
-var _vfDataHandler = __webpack_require__(122);
+var _vfDataHandler = __webpack_require__(120);
 
-var _playerHandler = __webpack_require__(123);
+var _playerHandler = __webpack_require__(121);
 
 var events = __webpack_require__(3);
 
@@ -4506,7 +4506,211 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 "use strict";
 
 
-var _xpath = __webpack_require__(117);
+var _pages = __webpack_require__(117);
+
+function addPages(data) {
+    _pages.pages.set(data);
+}
+
+module.exports = {
+    pages: addPages
+};
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.pages = undefined;
+
+var _classCallCheck2 = __webpack_require__(23);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(38);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dataProperty = Symbol();
+
+var Pages = function () {
+    function Pages(data) {
+        (0, _classCallCheck3.default)(this, Pages);
+
+        this[dataProperty] = data || [];
+    }
+
+    (0, _createClass3.default)(Pages, [{
+        key: "get",
+        value: function get() {
+            return this[dataProperty];
+        }
+    }, {
+        key: "set",
+        value: function set(data) {
+            this[dataProperty] = data;
+        }
+    }]);
+    return Pages;
+}();
+
+var pages = exports.pages = new Pages();
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _queryParams = __webpack_require__(39);
+
+function qp(data) {
+    _queryParams.queryParams.set(data);
+}
+
+module.exports = {
+    queryParams: qp
+};
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function reload(w) {
+    (w || window).location.reload();
+}
+
+module.exports = {
+    reload: reload
+};
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function handleVFData(data) {
+    if (data.mode) {
+        window.vff.mode = data.mode;
+    }
+    window.vff.onReady();
+}
+
+module.exports = {
+    handleVFData: handleVFData
+};
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _helpers = __webpack_require__(4);
+
+var _events = __webpack_require__(3);
+
+function deviceChange(data) {
+    window.vff.isMobile = data.device === 'mobile';
+    if (window.vff.isMobile) {
+        window.document.body.classList.add('vff-mobile');
+    } else {
+        window.document.body.classList.remove('vff-mobile');
+    }
+}
+
+function modeChange(data) {
+    window.vff.mode = data.mode;
+    (0, _helpers.broadcast)(_events.MODE_CHANGE, data.mode);
+}
+
+function playerStatus(data) {
+    if (!window.vff._playerStatus || data.timecode !== window.vff._playerStatus.timecode) {
+        (0, _helpers.broadcast)(_events.VIDEO_TIME_UPDATE, data.timecode);
+    }
+    window.vff._playerStatus = data;
+    //TODO handle status change
+}
+
+module.exports = {
+    deviceChange: deviceChange,
+    playerStatus: playerStatus,
+    modeChange: modeChange
+};
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _helpers = __webpack_require__(4);
+
+var classes = {
+    'overlay-fill': 'vff-overlay-fill',
+    'overlay-fit': 'vff-overlay-fit',
+    'video-fit': 'vff-video-fit',
+    'video-fill': 'vff-video-fill',
+    'video-fitTop': 'vff-video-fit-top',
+    'video-fitBottom': 'vff-video-fit-bottom'
+};
+
+function readDeviceOrientation() {
+    //We are using this method in order no to use window.orientation
+    //window.orientation gives different results on Android and iOS
+    var screenOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+    var orientation = window.screen.orientation && window.screen.orientation.type.indexOf('portrait') >= 0 || screenOrientation === 'portrait' ? 'Portrait' : 'Landscape';
+    return orientation;
+}
+
+function resizeHandler() {
+    var overlaySizing = '';
+    var videoSizing = '';
+    try {
+        overlaySizing = window.vff._playerStatus['overlaySizing' + (_helpers.isMobile ? readDeviceOrientation() : '')];
+        videoSizing = window.vff._playerStatus['contentSizing' + (_helpers.isMobile ? readDeviceOrientation() : '')];
+    } catch (e) {
+        //no status yet
+    }
+    Object.values(classes).forEach(function (c) {
+        window.document.body.classList.remove(c);
+    });
+    window.document.body.classList.add(classes['overlay-' + overlaySizing]);
+    window.document.body.classList.add(classes['video-' + videoSizing]);
+}
+
+module.exports = {
+    init: function init() {
+        window.addEventListener('resize', function () {
+            resizeHandler();
+        });
+        resizeHandler();
+    }
+};
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _xpath = __webpack_require__(124);
 
 var _messenger = __webpack_require__(8);
 
@@ -4612,7 +4816,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 117 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4674,210 +4878,6 @@ module.exports = {
         return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     }
 
-};
-
-/***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _pages = __webpack_require__(119);
-
-function addPages(data) {
-    _pages.pages.set(data);
-}
-
-module.exports = {
-    pages: addPages
-};
-
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.pages = undefined;
-
-var _classCallCheck2 = __webpack_require__(23);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(38);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var dataProperty = Symbol();
-
-var Pages = function () {
-    function Pages(data) {
-        (0, _classCallCheck3.default)(this, Pages);
-
-        this[dataProperty] = data || [];
-    }
-
-    (0, _createClass3.default)(Pages, [{
-        key: "get",
-        value: function get() {
-            return this[dataProperty];
-        }
-    }, {
-        key: "set",
-        value: function set(data) {
-            this[dataProperty] = data;
-        }
-    }]);
-    return Pages;
-}();
-
-var pages = exports.pages = new Pages();
-
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _queryParams = __webpack_require__(39);
-
-function qp(data) {
-    _queryParams.queryParams.set(data);
-}
-
-module.exports = {
-    queryParams: qp
-};
-
-/***/ }),
-/* 121 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function reload(w) {
-    (w || window).location.reload();
-}
-
-module.exports = {
-    reload: reload
-};
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function handleVFData(data) {
-    if (data.mode) {
-        window.vff.mode = data.mode;
-    }
-    window.vff.onReady();
-}
-
-module.exports = {
-    handleVFData: handleVFData
-};
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _helpers = __webpack_require__(4);
-
-var _events = __webpack_require__(3);
-
-function deviceChange(data) {
-    window.vff.isMobile = data.device === 'mobile';
-    if (window.vff.isMobile) {
-        window.document.body.classList.add('vff-mobile');
-    } else {
-        window.document.body.classList.remove('vff-mobile');
-    }
-}
-
-function modeChange(data) {
-    window.vff.mode = data.mode;
-    (0, _helpers.broadcast)(_events.MODE_CHANGE, data.mode);
-}
-
-function playerStatus(data) {
-    if (!window.vff._playerStatus || data.timecode !== window.vff._playerStatus.timecode) {
-        (0, _helpers.broadcast)(_events.VIDEO_TIME_UPDATE, data.timecode);
-    }
-    window.vff._playerStatus = data;
-    //TODO handle status change
-}
-
-module.exports = {
-    deviceChange: deviceChange,
-    playerStatus: playerStatus,
-    modeChange: modeChange
-};
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _helpers = __webpack_require__(4);
-
-var classes = {
-    'overlay-fill': 'vff-overlay-fill',
-    'overlay-fit': 'vff-overlay-fit',
-    'video-fit': 'vff-video-fit',
-    'video-fill': 'vff-video-fill',
-    'video-fitTop': 'vff-video-fit-top',
-    'video-fitBottom': 'vff-video-fit-bottom'
-};
-
-function readDeviceOrientation() {
-    //We are using this method in order no to use window.orientation
-    //window.orientation gives different results on Android and iOS
-    var screenOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-    var orientation = window.screen.orientation && window.screen.orientation.type.indexOf('portrait') >= 0 || screenOrientation === 'portrait' ? 'Portrait' : 'Landscape';
-    return orientation;
-}
-
-function resizeHandler() {
-    var overlaySizing = '';
-    var videoSizing = '';
-    try {
-        overlaySizing = window.vff._playerStatus['overlaySizing' + (_helpers.isMobile ? readDeviceOrientation() : '')];
-        videoSizing = window.vff._playerStatus['contentSizing' + (_helpers.isMobile ? readDeviceOrientation() : '')];
-    } catch (e) {
-        //no status yet
-    }
-    Object.values(classes).forEach(function (c) {
-        window.document.body.classList.remove(c);
-    });
-    window.document.body.classList.add(classes['overlay-' + overlaySizing]);
-    window.document.body.classList.add(classes['video-' + videoSizing]);
-}
-
-module.exports = {
-    init: function init() {
-        window.addEventListener('resize', function () {
-            resizeHandler();
-        });
-        resizeHandler();
-    }
 };
 
 /***/ }),
