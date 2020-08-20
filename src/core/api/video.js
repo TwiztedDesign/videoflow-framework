@@ -1,6 +1,7 @@
 import {send} from '../../utils/messenger.js';
 import {on} from '../../utils/helpers.js';
 import {VIDEO_TIME_UPDATE} from '../../utils/events';
+import {metadata} from "../metadata";
 const api = {};
 
 Object.defineProperty(api, 'currentTime', {
@@ -49,6 +50,11 @@ api.onTimeUpdate = function(fn){
     on(VIDEO_TIME_UPDATE, fn);
 };
 
+api.getInfo = function(){
+    return metadata.whenReady().then(() => {
+        return metadata.get();
+    });
+};
 
 /*
 -- isPlaying //(paused)

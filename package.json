@@ -1,6 +1,6 @@
 {
   "name": "videoflow-framework",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Html graphics for broadcast",
   "main": "dist/vff.js",
   "scripts": {

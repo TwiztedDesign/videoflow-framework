@@ -4602,9 +4602,22 @@ module.exports = {
 "use strict";
 
 
+var _metadata = __webpack_require__(132);
+
+function addStyle(styleString) {
+    var style = document.createElement('style');
+    style.textContent = styleString;
+    document.head.append(style);
+}
+
 function handleVFData(data) {
+    _metadata.metadata.set(data.input);
+
     if (data.mode) {
         window.vff.mode = data.mode;
+    }
+    if (data.customCss) {
+        addStyle(data.customCss);
     }
     window.vff.onReady();
 }
@@ -5009,6 +5022,8 @@ var _helpers = __webpack_require__(4);
 
 var _events = __webpack_require__(3);
 
+var _metadata = __webpack_require__(132);
+
 var api = {};
 
 Object.defineProperty(api, 'currentTime', {
@@ -5055,6 +5070,12 @@ api.goTo = function (time) {
 
 api.onTimeUpdate = function (fn) {
     (0, _helpers.on)(_events.VIDEO_TIME_UPDATE, fn);
+};
+
+api.getInfo = function () {
+    return _metadata.metadata.whenReady().then(function () {
+        return _metadata.metadata.get();
+    });
 };
 
 /*
@@ -5314,6 +5335,69 @@ module.exports = {
 		});
 	}
 };
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.metadata = undefined;
+
+var _classCallCheck2 = __webpack_require__(23);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(38);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _helpers = __webpack_require__(4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dataProperty = Symbol();
+var deferProperty = Symbol();
+var timeout = 30000;
+
+var Metadata = function () {
+    function Metadata(data) {
+        var _this = this;
+
+        (0, _classCallCheck3.default)(this, Metadata);
+
+        this[dataProperty] = data || {};
+        this[deferProperty] = (0, _helpers.defer)();
+        setTimeout(function () {
+            _this[deferProperty].reject({ error: "timeout" });
+        }, timeout);
+    }
+
+    (0, _createClass3.default)(Metadata, [{
+        key: "whenReady",
+        value: function whenReady() {
+            return this[deferProperty].promise;
+        }
+    }, {
+        key: "get",
+        value: function get() {
+            return this[dataProperty];
+        }
+    }, {
+        key: "set",
+        value: function set(data) {
+            this[dataProperty] = data;
+            this[deferProperty].resolve(data);
+        }
+    }]);
+    return Metadata;
+}();
+
+var metadata = exports.metadata = new Metadata();
 
 /***/ })
 /******/ ]);
