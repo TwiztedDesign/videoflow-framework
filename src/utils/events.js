@@ -20,6 +20,7 @@ module.exports = {
     "RELOAD"        : "vff-reload",
     "VF_DATA"       : "vff-vf-data",
     "VF_SETUP"      : "vff-vf-setup",
+    "VF_APPS"       : "vff-vf-apps",
 
     "DATA_READY"    : "vff-data-ready",
     "CUSTOM_READY"  : "vff-custom-ready",

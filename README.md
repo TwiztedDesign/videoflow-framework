@@ -16,7 +16,8 @@ https://cdn.jsdelivr.net/npm/videoflow-framework@0
 * vff.onModeChange(callback)
 * vff.ready(callback)
 * vff.isController() - should be called after vff is ready
-
+* vff.video.getInfo() - *returns promise* with the input data
+* vff.getApps() - *return promise* with the list of apps
 
 # Utils
 * vff.colorpicker(element, options)

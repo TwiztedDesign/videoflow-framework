@@ -17,6 +17,7 @@ import * as httpApi from './core/api/http';
 import {MODE} from './core/consts';
 import * as noOverScroll from './utils/noOverscroll';
 import {colorPicker} from './utils/helpers/colorpicker.js';
+import {metadata} from "./core/metadata";
 // import Sortable from './utils/helpers/sortable';
 
 startListener();
@@ -37,6 +38,11 @@ vff.onReady             = () => {_readyCallbacks.forEach(cb => {cb();});}; //tod
 vff.customReady         = () => {send(CUSTOM_READY);};
 
 vff.getQueryParams      = () => {return queryParams.get();};
+vff.getApps             = () => {
+    return metadata.appsReady().then(() => {
+        return metadata.getApps();
+    });
+};
 vff.request             = (type, payload, cb) => { request(type, payload, cb); };
 vff.setup               = (options) => {return setup(options);};
 
