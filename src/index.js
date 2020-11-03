@@ -1,6 +1,6 @@
 import {send, request} from './utils/messenger.js';
 import {setup} from './core/vffSetup';
-import {READY, CUSTOM_READY, MODE_CHANGE} from './utils/events.js';
+import {READY, CUSTOM_READY, MODE_CHANGE, DEVICE_CHANGE} from './utils/events.js';
 import {vffState} from './core/vffState.js';
 import {queryParams} from "./core/queryParams.js";
 import {start as startListener} from './utils/listener';
@@ -68,6 +68,9 @@ vff._playerStatus = {};
 
 vff.onModeChange = (cb) => {
     on(MODE_CHANGE, cb);
+};
+vff.onDeviceChange = (cb) => {
+    on(DEVICE_CHANGE, cb);
 };
 vff.colorpicker = (el,options) => {colorPicker(el,options);};
 // vff.sortable = (el, items, options) => {return new Sortable(el, items, options);};

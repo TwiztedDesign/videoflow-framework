@@ -1,5 +1,6 @@
 import {broadcast} from '../../utils/helpers';
-import {VIDEO_TIME_UPDATE, MODE_CHANGE} from '../../utils/events';
+import {VIDEO_TIME_UPDATE, MODE_CHANGE, DEVICE_CHANGE} from '../../utils/events';
+import {showStyle, hideStyle} from '../../utils/customStyle';
 
 function deviceChange(data){
     window.vff.isMobile = data.device === 'mobile';
@@ -8,11 +9,17 @@ function deviceChange(data){
     } else {
         window.document.body.classList.remove('vff-mobile');
     }
+    broadcast(DEVICE_CHANGE);
 }
 
 function modeChange(data){
     window.vff.mode = data.mode;
     broadcast(MODE_CHANGE, data.mode);
+    if(window.vff.isController()){
+        hideStyle();
+    } else {
+        showStyle();
+    }
 }
 
 function playerStatus(data){

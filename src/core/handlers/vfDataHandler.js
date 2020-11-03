@@ -1,10 +1,5 @@
 import {metadata} from '../metadata.js';
-
-function addStyle(styleString) {
-    const style = document.createElement('style');
-    style.textContent = styleString;
-    document.head.append(style);
-}
+import {createStyle, showStyle} from '../../utils/customStyle';
 
 function handleVFData(data) {
     metadata.set(data.input);
@@ -13,7 +8,10 @@ function handleVFData(data) {
         window.vff.mode = data.mode;
     }
     if(data.customCss){
-        addStyle(data.customCss);
+        createStyle(data.customCss);
+        if(!window.vff.isController()){
+            showStyle();
+        }
     }
     window.vff.onReady();
 }
